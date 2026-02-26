@@ -1,20 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CourseController!{% endblock %}
+{% block title %}Liste des cours{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<h1>Tous les cours</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'D:/TP_SEMESTRE_4/TP1/schoolprepar/src/Controller/CourseController.php'|file_link(0) }}">src/Controller/CourseController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'D:/TP_SEMESTRE_4/TP1/schoolprepar/templates/course/index.html.twig'|file_link(0) }}">templates/course/index.html.twig</a></code></li>
-    </ul>
-</div>
+<p>{{ courses|length }} cours disponibles</p>
+
+<hr>
+
+<ul>
+{% for course in courses %}
+    <li>
+        <strong>{{ course.titre }}</strong><br>
+        Catégorie : {{ course.categorie }}<br>
+        Niveau : {{ course.niveau }}<br>
+        Exercices : {{ course.nb_exercices }}<br>
+         
+    </li>
+    <hr>
+{% else %}
+    <li>Aucun cours disponible.</li>
+{% endfor %}
+</ul>
+
 {% endblock %}

@@ -14,16 +14,15 @@
         {% endblock %}
     </head>
     <body>
-       <header>
-        <h1>SchoolPrepar</h1>
-        <nav>
-        <a href="{{path ('home')}}">Accueil</a>
-        <a href="{{path('course list')}}"Cours</a>
-        </nav>
-        </header>
-        
-        <hr>
 
-        {% block body %}{% endblock %}
-    </body>
+<nav>
+    <a href="{{ path('app_home') }}">Accueil</a> |
+    <a href="{{ path('app_course_index') }}">Cours</a>
+</nav>
+
+<hr>
+
+{% block body %}{% endblock %}
+
+</body>
 </html>
