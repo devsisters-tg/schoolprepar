@@ -1,0 +1,101 @@
+{% extends 'front/base.html.twig' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block body %}
+
+{# ── HERO ── #}
+<section class="hero-section">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">
+            <i class="bi bi-mortarboard-fill me-2"></i>Bienvenue sur SchoolPrepar
+        </h1>
+        <p class="lead mb-4" style="color:#c7d2fe;">
+            Trouvez la filière et l'établissement qui correspondent à votre projet académique au Togo.
+        </p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="{{ path('filieres') }}" class="btn btn-light btn-lg px-4">
+                <i class="bi bi-book me-2"></i>Découvrir les filières
+            </a>
+            <a href="{{ path('etablissements') }}" class="btn btn-outline-light btn-lg px-4">
+                <i class="bi bi-building me-2"></i>Voir les établissements
+            </a>
+        </div>
+    </div>
+</section>
+
+{# ── STATISTIQUES ── #}
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4 col-sm-6">
+                <div class="stat-card shadow-sm">
+                    <i class="bi bi-people-fill fs-1 text-primary mb-2"></i>
+                    <div class="stat-number">{{ stats.students }}</div>
+                    <p class="text-muted mb-0">Étudiants inscrits</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="stat-card shadow-sm">
+                    <i class="bi bi-journal-richtext fs-1 text-success mb-2"></i>
+                    <div class="stat-number" style="color:#059669;">{{ stats.courses }}</div>
+                    <p class="text-muted mb-0">Cours disponibles</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="stat-card shadow-sm">
+                    <i class="bi bi-pencil-square fs-1 text-warning mb-2"></i>
+                    <div class="stat-number" style="color:#d97706;">{{ stats.exercises }}</div>
+                    <p class="text-muted mb-0">Exercices pratiques</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# ── DERNIERS COURS ── #}
+<section class="py-5 bg-white">
+    <div class="container">
+        <h2 class="fw-bold mb-4 text-center">
+            <i class="bi bi-star-fill text-warning me-2"></i>Derniers cours ajoutés
+        </h2>
+        <div class="row g-4">
+            {% for course in recent_courses %}
+            <div class="col-md-4">
+                <div class="card h-100 p-3">
+                    <div class="card-body">
+                        <span class="badge bg-primary mb-3">{{ course.categorie }}</span>
+                        <h5 class="card-title fw-bold">{{ course.titre }}</h5>
+                        <p class="card-text text-muted">
+                            <i class="bi bi-bar-chart me-1"></i>Niveau : <strong>{{ course.niveau }}</strong>
+                        </p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0">
+                        <a href="#" class="btn btn-outline-primary btn-sm w-100">
+                            <i class="bi bi-eye me-1"></i>Voir le cours
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ path('filieres') }}" class="btn btn-primary px-4">
+                Voir toutes les filières <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+{# ── CTA ── #}
+<section class="py-5" style="background:linear-gradient(135deg,#4f46e5,#7c3aed);color:white;">
+    <div class="container text-center">
+        <h3 class="fw-bold mb-3">Prêt à trouver votre établissement ?</h3>
+        <p class="mb-4" style="color:#c7d2fe;">Consultez notre annuaire des établissements partenaires.</p>
+        <a href="{{ path('etablissements') }}" class="btn btn-light btn-lg px-5">
+            <i class="bi bi-search me-2"></i>Explorer les établissements
+        </a>
+    </div>
+</section>
+
+{% endblock %}

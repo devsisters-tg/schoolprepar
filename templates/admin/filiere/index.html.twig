@@ -1,0 +1,68 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block body %}
+
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+        <h4 class="fw-bold mb-1"><i class="bi bi-book text-primary me-2"></i>Gestion des filières</h4>
+        <p class="text-muted mb-0">{{ filieres|length }} filière(s) au total</p>
+    </div>
+    <button class="btn btn-primary" disabled title="Disponible après intégration de Doctrine (TP3)">
+        <i class="bi bi-plus-lg me-1"></i>Ajouter une filière
+    </button>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Nom de la filière</th>
+                    <th>Niveau</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for f in filieres %}
+                <tr>
+                    <td><span class="badge bg-light text-dark border">{{ f.id }}</span></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                                 style="width:36px;height:36px;background:#e0e7ff;color:#4f46e5;font-size:.75rem;font-weight:700;">
+                                {{ f.nom|slice(0,2)|upper }}
+                            </div>
+                            <strong>{{ f.nom }}</strong>
+                        </div>
+                    </td>
+                    <td><span class="badge bg-primary bg-opacity-10 text-primary px-3">{{ f.niveau }}</span></td>
+                    <td class="text-center">
+                        <button class="btn btn-outline-warning btn-sm me-1" disabled title="TP3">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm" disabled title="TP3">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center py-4 text-muted">
+                        <i class="bi bi-inbox fs-3 d-block mb-2"></i>Aucune filière enregistrée.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="alert alert-info mt-3 d-flex align-items-center" role="alert">
+    <i class="bi bi-info-circle-fill me-2"></i>
+    <small>Les fonctionnalités d'ajout, modification et suppression seront disponibles après l'intégration de Doctrine ORM au TP3.</small>
+</div>
+
+{% endblock %}

@@ -1,13 +1,46 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
-app_home:
+# Les routes principales sont définies via les attributs #[Route()] dans les controllers.
+# Ce fichier déclare les routes du front-office et back-office explicitement
+# pour la clarté et la compatibilité.
+
+# =============================================
+# FRONT-OFFICE
+# =============================================
+home:
     path: /
     controller: App\Controller\HomeController::index
     methods: [GET]
 
+filieres:
+    path: /filieres
+    controller: App\Controller\FiliereController::index
+    methods: [GET]
 
-app_course_index:
-    path: /courses
-    controller: App\Controller\CourseController::index
+filiere_show:
+    path: /filieres/{id}
+    controller: App\Controller\FiliereController::show
+    methods: [GET]
+    requirements:
+        id: \d+
+
+etablissements:
+    path: /etablissements
+    controller: App\Controller\EtablissementController::index
+    methods: [GET]
+
+# =============================================
+# BACK-OFFICE (ADMIN)
+# =============================================
+admin_dashboard:
+    path: /admin
+    controller: App\Controller\AdminDashboardController::index
+    methods: [GET]
+
+admin_filieres:
+    path: /admin/filieres
+    controller: App\Controller\AdminFiliereController::index
+    methods: [GET]
+
+admin_etablissements:
+    path: /admin/etablissements
+    controller: App\Controller\AdminEtablissementController::index
     methods: [GET]

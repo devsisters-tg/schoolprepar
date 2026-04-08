@@ -1,0 +1,85 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block body %}
+
+{# TITRE #}
+<div class="mb-4">
+    <h4 class="fw-bold mb-1">Tableau de bord</h4>
+    <p class="text-muted mb-0">Vue d'ensemble de la plateforme SchoolPrepar</p>
+</div>
+
+{# WIDGETS STATS #}
+<div class="row g-4 mb-4">
+    <div class="col-sm-6 col-xl-4">
+        <div class="stat-widget" style="background:linear-gradient(135deg,#4f46e5,#6366f1);">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span style="font-size:.85rem;opacity:.85;">Filières</span>
+                <i class="bi bi-book-fill fs-4 opacity-75"></i>
+            </div>
+            <div class="stat-num">{{ stats.filieres }}</div>
+            <small style="opacity:.75;">Filières enregistrées</small>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-4">
+        <div class="stat-widget" style="background:linear-gradient(135deg,#059669,#10b981);">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span style="font-size:.85rem;opacity:.85;">Établissements</span>
+                <i class="bi bi-building-fill fs-4 opacity-75"></i>
+            </div>
+            <div class="stat-num">{{ stats.etablissements }}</div>
+            <small style="opacity:.75;">Établissements référencés</small>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-4">
+        <div class="stat-widget" style="background:linear-gradient(135deg,#d97706,#f59e0b);">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span style="font-size:.85rem;opacity:.85;">Utilisateurs</span>
+                <i class="bi bi-people-fill fs-4 opacity-75"></i>
+            </div>
+            <div class="stat-num">{{ stats.utilisateurs }}</div>
+            <small style="opacity:.75;">Utilisateurs inscrits</small>
+        </div>
+    </div>
+</div>
+
+{# ACCÈS RAPIDES #}
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card p-4">
+            <h5 class="fw-bold mb-3"><i class="bi bi-lightning-charge text-primary me-2"></i>Accès rapides</h5>
+            <div class="d-grid gap-2">
+                <a href="{{ path('admin_filieres') }}" class="btn btn-outline-primary text-start">
+                    <i class="bi bi-book me-2"></i>Gérer les filières
+                    <span class="float-end badge bg-primary">{{ stats.filieres }}</span>
+                </a>
+                <a href="{{ path('admin_etablissements') }}" class="btn btn-outline-success text-start">
+                    <i class="bi bi-building me-2"></i>Gérer les établissements
+                    <span class="float-end badge bg-success">{{ stats.etablissements }}</span>
+                </a>
+                <a href="{{ path('home') }}" class="btn btn-outline-secondary text-start" target="_blank">
+                    <i class="bi bi-globe me-2"></i>Voir le site public
+                    <i class="bi bi-box-arrow-up-right float-end"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card p-4">
+            <h5 class="fw-bold mb-3"><i class="bi bi-info-circle text-primary me-2"></i>Informations TP</h5>
+            <table class="table table-sm mb-0">
+                <tbody>
+                    <tr><td class="text-muted">Module</td><td><strong>IT 232 — Développement Web II</strong></td></tr>
+                    <tr><td class="text-muted">TP</td><td><strong>TP2 — Routage & Vues Dynamiques</strong></td></tr>
+                    <tr><td class="text-muted">Framework</td><td><strong>Symfony 6.4</strong></td></tr>
+                    <tr><td class="text-muted">Templates</td><td><strong>Twig + Bootstrap 5</strong></td></tr>
+                    <tr><td class="text-muted">Encadrant</td><td><strong>M. EDOU Dodji</strong></td></tr>
+                    <tr><td class="text-muted">Institut</td><td><strong>iP Net Institute of Technology</strong></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends 'front/base.html.twig' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block body %}
+
+<section class="py-4" style="background:linear-gradient(135deg,#1e1b4b,#4f46e5);color:white;">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-2">
+                <li class="breadcrumb-item"><a href="{{ path('home') }}" class="text-light opacity-75">Accueil</a></li>
+                <li class="breadcrumb-item"><a href="{{ path('filieres') }}" class="text-light opacity-75">Filières</a></li>
+                <li class="breadcrumb-item active text-white">{{ filiere.nom }}</li>
+            </ol>
+        </nav>
+        <h1 class="fw-bold mb-1"><i class="bi bi-book-fill me-2"></i>{{ filiere.nom }}</h1>
+        <span class="badge bg-white text-primary fw-semibold">{{ filiere.niveau }}</span>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+
+            {# Carte description #}
+            <div class="col-lg-8">
+                <div class="card p-4 mb-4">
+                    <h4 class="fw-bold mb-3"><i class="bi bi-info-circle text-primary me-2"></i>À propos de cette filière</h4>
+                    <p class="text-muted">{{ filiere.description }}</p>
+
+                    {% if filiere.duree is defined %}
+                    <hr>
+                    <div class="row g-3 mt-1">
+                        <div class="col-sm-6">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-clock fs-4 text-primary me-3"></i>
+                                <div>
+                                    <small class="text-muted d-block">Durée</small>
+                                    <strong>{{ filiere.duree }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-bar-chart fs-4 text-success me-3"></i>
+                                <div>
+                                    <small class="text-muted d-block">Niveau</small>
+                                    <strong>{{ filiere.niveau }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                {% if filiere.debouches is defined %}
+                <div class="card p-4">
+                    <h4 class="fw-bold mb-3"><i class="bi bi-briefcase text-success me-2"></i>Débouchés professionnels</h4>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for debouche in filiere.debouches %}
+                        <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 fs-6">
+                            <i class="bi bi-check-circle me-1"></i>{{ debouche }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            {# Sidebar #}
+            <div class="col-lg-4">
+                <div class="card p-4 mb-3" style="background:#f0f4ff;">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-building text-primary me-2"></i>Établissements</h5>
+                    <p class="text-muted small">Trouvez les établissements qui proposent cette filière.</p>
+                    <a href="{{ path('etablissements') }}" class="btn btn-primary btn-sm w-100">
+                        <i class="bi bi-search me-1"></i>Voir les établissements
+                    </a>
+                </div>
+                <div class="card p-4">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-grid text-primary me-2"></i>Autres filières</h5>
+                    <a href="{{ path('filieres') }}" class="btn btn-outline-primary btn-sm w-100">
+                        <i class="bi bi-arrow-left me-1"></i>Retour aux filières
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}
