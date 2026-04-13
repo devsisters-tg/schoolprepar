@@ -1,70 +1,69 @@
 {% extends 'admin/base.html.twig' %}
-
 {% block title %}{{ page_title }}{% endblock %}
-
 {% block body %}
+<div class="container-fluid py-4">
 
-<div class="d-flex align-items-center justify-content-between mb-4">
-    <div>
-        <h4 class="fw-bold mb-1"><i class="bi bi-building text-success me-2"></i>Gestion des établissements</h4>
-        <p class="text-muted mb-0">{{ etablissements|length }} établissement(s) référencé(s)</p>
+    {% for type, messages in app.flashes %}
+        {% for msg in messages %}
+            <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show">
+                {{ msg }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="mb-0 fw-bold"><i class="bi bi-building me-2 text-primary"></i>{{ page_title }}</h4>
+            <small class="text-muted">{{ etablissements|length }} établissement(s) enregistré(s)</small>
+        </div>
+        <a href="{{ path('admin_etablissements_new') }}" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-1"></i> Nouvel établissement
+        </a>
     </div>
-    <button class="btn btn-success" disabled title="Disponible après intégration de Doctrine (TP3)">
-        <i class="bi bi-plus-lg me-1"></i>Ajouter un établissement
-    </button>
-</div>
 
-<div class="card">
-    <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-            <thead class="table-light">
-                <tr>
-                    <th>#</th>
-                    <th>Nom</th>
-                    <th>Ville</th>
-                    <th class="text-center">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for e in etablissements %}
-                <tr>
-                    <td><span class="badge bg-light text-dark border">{{ e.id }}</span></td>
-                    <td>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="rounded-circle d-flex align-items-center justify-content-center"
-                                 style="width:36px;height:36px;background:#dcfce7;color:#059669;font-size:.75rem;font-weight:700;">
-                                {{ e.nom|slice(0,2)|upper }}
-                            </div>
-                            <strong>{{ e.nom }}</strong>
-                        </div>
-                    </td>
-                    <td>
-                        <i class="bi bi-geo-alt text-muted me-1"></i>{{ e.ville }}
-                    </td>
-                    <td class="text-center">
-                        <button class="btn btn-outline-warning btn-sm me-1" disabled title="TP3">
-                            <i class="bi bi-pencil"></i>
-                        </button>
-                        <button class="btn btn-outline-danger btn-sm" disabled title="TP3">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </td>
-                </tr>
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Sigle</th>
+                        <th>Ville</th>
+                        <th>Type</th>
+                        <th>Filières</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for etab in etablissements %}
+                    <tr>
+                        <td class="text-muted">{{ etab.id }}</td>
+                        <td class="fw-semibold">{{ etab.nom }}</td>
+                        <td>{{ etab.sigle ?? '—' }}</td>
+                        <td><i class="bi bi-geo-alt text-danger"></i> {{ etab.ville }}</td>
+                        <td>{{ etab.type ?? '—' }}</td>
+                        <td>
+                            {% for f in etab.filieres %}
+                                <span class="badge bg-light text-dark border">{{ f.nom }}</span>
+                            {% else %}<span class="text-muted">—</span>{% endfor %}
+                        </td>
+                        <td class="text-end">
+                            <a href="{{ path('admin_etablissements_show', {id: etab.id}) }}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a>
+                            <a href="{{ path('admin_etablissements_edit', {id: etab.id}) }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
+                            <form method="post" action="{{ path('admin_etablissements_delete', {id: etab.id}) }}" class="d-inline"
+                                  onsubmit="return confirm('Supprimer cet établissement ?')">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ etab.id) }}">
+                                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </td>
+                    </tr>
                 {% else %}
-                <tr>
-                    <td colspan="4" class="text-center py-4 text-muted">
-                        <i class="bi bi-building fs-3 d-block mb-2"></i>Aucun établissement enregistré.
-                    </td>
-                </tr>
+                    <tr><td colspan="7" class="text-center text-muted py-4">Aucun établissement enregistré.</td></tr>
                 {% endfor %}
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
-
-<div class="alert alert-info mt-3 d-flex align-items-center" role="alert">
-    <i class="bi bi-info-circle-fill me-2"></i>
-    <small>Les fonctionnalités d'ajout, modification et suppression seront disponibles après l'intégration de Doctrine ORM au TP3.</small>
-</div>
-
 {% endblock %}

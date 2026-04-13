@@ -1,6 +1,9 @@
-# Les routes principales sont définies via les attributs #[Route()] dans les controllers.
-# Ce fichier déclare les routes du front-office et back-office explicitement
-# pour la clarté et la compatibilité.
+# =======================================================
+# SchoolPrepar — Routes (TP3)
+# Les routes CRUD admin utilisent le préfixe @Route dans
+# les controllers (annotations). Ce fichier déclare les
+# routes front-office et le dashboard admin.
+# =======================================================
 
 # =============================================
 # FRONT-OFFICE
@@ -28,19 +31,14 @@ etablissements:
     methods: [GET]
 
 # =============================================
-# BACK-OFFICE (ADMIN)
+# BACK-OFFICE — Dashboard
 # =============================================
 admin_dashboard:
     path: /admin
     controller: App\Controller\AdminDashboardController::index
     methods: [GET]
 
-admin_filieres:
-    path: /admin/filieres
-    controller: App\Controller\AdminFiliereController::index
-    methods: [GET]
-
-admin_etablissements:
-    path: /admin/etablissements
-    controller: App\Controller\AdminEtablissementController::index
-    methods: [GET]
+# Les routes CRUD sont définies via @Route dans :
+#   AdminFiliereController      → /admin/filieres  (admin_filieres_*)
+#   AdminEtablissementController→ /admin/etablissements (admin_etablissements_*)
+#   AdminEvenementController    → /admin/evenements (admin_evenements_*)

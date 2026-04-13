@@ -78,21 +78,27 @@
         </a>
 
         <div class="nav-section mt-2">Gestion</div>
-        <a href="{{ path('admin_filieres') }}" class="nav-link {{ app.request.pathInfo starts with '/admin/filieres' ? 'active' : '' }}">
+        <a href="{{ path('admin_filieres_index') }}" class="nav-link {{ app.request.pathInfo starts with '/admin/filieres' ? 'active' : '' }}">
             <i class="bi bi-book me-2"></i>Gestion des filières
         </a>
-        <a href="{{ path('admin_etablissements') }}" class="nav-link {{ app.request.pathInfo starts with '/admin/etablissements' ? 'active' : '' }}">
+        <a href="{{ path('admin_etablissements_index') }}" class="nav-link {{ app.request.pathInfo starts with '/admin/etablissements' ? 'active' : '' }}">
             <i class="bi bi-building me-2"></i>Gestion des établissements
+        </a>
+        <a href="{{ path('admin_evenements_index') }}" class="nav-link {{ app.request.pathInfo starts with '/admin/evenements' ? 'active' : '' }}">
+            <i class="bi bi-calendar-event me-2"></i>Gestion des événements
         </a>
 
         <div class="nav-section mt-2">Navigation</div>
         <a href="{{ path('home') }}" class="nav-link">
             <i class="bi bi-globe me-2"></i>Voir le site
         </a>
+        <a href="{{ path('admin_users_index') }}" class="nav-link {{ app.request.pathInfo starts with '/admin/users' ? 'active' : '' }}">
+           <i class="bi bi-people me-2"></i>Gestion des utilisateurs
+        </a>
     </nav>
 
     <div style="padding:16px 20px;border-top:1px solid rgba(255,255,255,.1);">
-        <small style="color:#6b7280;">IT 232 — Symfony TP2</small>
+        <small style="color:#6b7280;">IT 232 — Symfony TP3</small>
     </div>
 </div>
 

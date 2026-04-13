@@ -1,0 +1,33 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}{{ page_title }}{% endblock %}
+{% block body %}
+<div class="container-fluid py-4">
+    <div class="d-flex align-items-center mb-4">
+        <a href="{{ path('admin_evenements_index') }}" class="btn btn-outline-secondary me-3"><i class="bi bi-arrow-left"></i></a>
+        <h4 class="mb-0 fw-bold"><i class="bi bi-eye me-2 text-info"></i>{{ page_title }}</h4>
+    </div>
+    <div class="card shadow-sm" style="max-width:700px">
+        <div class="card-body p-4">
+            <dl class="row">
+                <dt class="col-sm-4">Titre</dt><dd class="col-sm-8">{{ evenement.titre }}</dd>
+                <dt class="col-sm-4">Type</dt><dd class="col-sm-8">{{ evenement.type ?? '—' }}</dd>
+                <dt class="col-sm-4">Date</dt><dd class="col-sm-8">{{ evenement.dateEvenement|date('d/m/Y à H:i') }}</dd>
+                <dt class="col-sm-4">Lieu</dt><dd class="col-sm-8">{{ evenement.lieu ?? '—' }}</dd>
+                <dt class="col-sm-4">Description</dt><dd class="col-sm-8">{{ evenement.description ?? '—' }}</dd>
+                <dt class="col-sm-4">Filière</dt><dd class="col-sm-8">{{ evenement.filiere ? evenement.filiere.nom : '—' }}</dd>
+                <dt class="col-sm-4">Établissement</dt><dd class="col-sm-8">{{ evenement.etablissement ? evenement.etablissement.nom : '—' }}</dd>
+            </dl>
+            <div class="d-flex gap-2 mt-3">
+                <a href="{{ path('admin_evenements_edit', {id: evenement.id}) }}" class="btn btn-warning text-white">
+                    <i class="bi bi-pencil me-1"></i>Modifier
+                </a>
+                <form method="post" action="{{ path('admin_evenements_delete', {id: evenement.id}) }}"
+                      onsubmit="return confirm('Supprimer cet événement ?')">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ evenement.id) }}">
+                    <button class="btn btn-danger"><i class="bi bi-trash me-1"></i>Supprimer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,56 +1,55 @@
 {% extends 'front/base.html.twig' %}
-
 {% block title %}{{ page_title }}{% endblock %}
-
 {% block body %}
 
-<section class="py-4" style="background:linear-gradient(135deg,#1e1b4b,#4f46e5);color:white;">
-    <div class="container">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-2">
-                <li class="breadcrumb-item"><a href="{{ path('home') }}" class="text-light opacity-75">Accueil</a></li>
-                <li class="breadcrumb-item active text-white">Filières</li>
-            </ol>
-        </nav>
-        <h1 class="fw-bold mb-1"><i class="bi bi-book-fill me-2"></i>Nos Filières</h1>
-        <p class="mb-0" style="color:#c7d2fe;">{{ filieres|length }} filière(s) disponibles</p>
+<section class="hero-section py-5">
+    <div class="container text-center text-white">
+        <h1 class="fw-bold"><i class="bi bi-journals me-2"></i>Filières d'études</h1>
+        <p class="lead opacity-75">Découvrez toutes les formations disponibles sur SchoolPrepar</p>
     </div>
 </section>
 
 <section class="py-5">
     <div class="container">
         <div class="row g-4">
-            {% for f in filieres %}
+        {% for filiere in filieres %}
             <div class="col-md-6 col-lg-4">
-                <div class="card h-100 p-1">
+                <div class="card h-100">
                     <div class="card-body p-4">
                         <div class="d-flex align-items-center mb-3">
                             <div class="rounded-circle d-flex align-items-center justify-content-center me-3"
-                                 style="width:50px;height:50px;background:#e0e7ff;">
-                                <i class="bi bi-laptop fs-4" style="color:#4f46e5;"></i>
+                                 style="width:48px;height:48px;background:#e0e7ff;">
+                                <i class="bi bi-mortarboard-fill" style="color:#4f46e5;font-size:1.3rem;"></i>
                             </div>
                             <div>
-                                <h5 class="fw-bold mb-0">{{ f.nom }}</h5>
-                                <span class="badge-filiere">{{ f.niveau }}</span>
+                                <h5 class="mb-0 fw-bold">{{ filiere.nom }}</h5>
+                                <span class="badge" style="background:#4f46e5;font-size:.75rem;">{{ filiere.niveau }}</span>
                             </div>
                         </div>
-                        <p class="text-muted small">{{ f.description }}</p>
+                        <p class="text-muted small">{{ filiere.description|default('Aucune description disponible.')|slice(0, 120) }}…</p>
+                        {% if filiere.duree %}
+                            <p class="mb-2"><i class="bi bi-clock text-primary me-1"></i><small>Durée : {{ filiere.duree }}</small></p>
+                        {% endif %}
+                        <div class="mb-3">
+                            {% for etab in filiere.etablissements %}
+                                <span class="badge bg-light text-dark border me-1">{{ etab.sigle ?? etab.nom }}</span>
+                            {% endfor %}
+                        </div>
                     </div>
-                    <div class="card-footer bg-transparent border-0 pb-3 px-4">
-                        <a href="{{ path('filiere_show', {'id': f.id}) }}" class="btn btn-primary btn-sm w-100">
-                            <i class="bi bi-arrow-right-circle me-1"></i>Voir les détails
+                    <div class="card-footer bg-transparent border-0 pb-4 px-4">
+                        <a href="{{ path('filiere_show', {id: filiere.id}) }}" class="btn btn-primary w-100">
+                            Voir le détail <i class="bi bi-arrow-right ms-1"></i>
                         </a>
                     </div>
                 </div>
             </div>
-            {% else %}
-            <div class="col-12 text-center py-5">
-                <i class="bi bi-inbox fs-1 text-muted"></i>
-                <p class="text-muted mt-2">Aucune filière disponible pour le moment.</p>
+        {% else %}
+            <div class="col-12 text-center py-5 text-muted">
+                <i class="bi bi-inbox fs-1"></i>
+                <p class="mt-2">Aucune filière disponible pour le moment.</p>
             </div>
-            {% endfor %}
+        {% endfor %}
         </div>
     </div>
 </section>
-
 {% endblock %}

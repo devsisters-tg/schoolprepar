@@ -1,0 +1,39 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}{{ page_title }}{% endblock %}
+{% block body %}
+<div class="container-fluid py-4">
+    <div class="d-flex align-items-center mb-4">
+        <a href="{{ path('admin_etablissements_index') }}" class="btn btn-outline-secondary me-3"><i class="bi bi-arrow-left"></i></a>
+        <h4 class="mb-0 fw-bold"><i class="bi bi-eye me-2 text-info"></i>{{ page_title }}</h4>
+    </div>
+    <div class="card shadow-sm" style="max-width:700px">
+        <div class="card-body p-4">
+            <dl class="row">
+                <dt class="col-sm-4">Nom</dt><dd class="col-sm-8">{{ etablissement.nom }}</dd>
+                <dt class="col-sm-4">Sigle</dt><dd class="col-sm-8">{{ etablissement.sigle ?? '—' }}</dd>
+                <dt class="col-sm-4">Ville</dt><dd class="col-sm-8">{{ etablissement.ville }}</dd>
+                <dt class="col-sm-4">Type</dt><dd class="col-sm-8">{{ etablissement.type ?? '—' }}</dd>
+                <dt class="col-sm-4">Description</dt><dd class="col-sm-8">{{ etablissement.description ?? '—' }}</dd>
+                <dt class="col-sm-4">Email</dt><dd class="col-sm-8">{{ etablissement.email ?? '—' }}</dd>
+                <dt class="col-sm-4">Téléphone</dt><dd class="col-sm-8">{{ etablissement.telephone ?? '—' }}</dd>
+                <dt class="col-sm-4">Filières</dt>
+                <dd class="col-sm-8">
+                    {% for f in etablissement.filieres %}
+                        <span class="badge bg-primary me-1">{{ f.nom }}</span>
+                    {% else %}<span class="text-muted">Aucune</span>{% endfor %}
+                </dd>
+            </dl>
+            <div class="d-flex gap-2 mt-3">
+                <a href="{{ path('admin_etablissements_edit', {id: etablissement.id}) }}" class="btn btn-warning text-white">
+                    <i class="bi bi-pencil me-1"></i>Modifier
+                </a>
+                <form method="post" action="{{ path('admin_etablissements_delete', {id: etablissement.id}) }}"
+                      onsubmit="return confirm('Supprimer cet établissement ?')">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ etablissement.id) }}">
+                    <button class="btn btn-danger"><i class="bi bi-trash me-1"></i>Supprimer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

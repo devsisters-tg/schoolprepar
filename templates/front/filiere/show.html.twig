@@ -1,91 +1,67 @@
 {% extends 'front/base.html.twig' %}
-
 {% block title %}{{ page_title }}{% endblock %}
-
 {% block body %}
 
-<section class="py-4" style="background:linear-gradient(135deg,#1e1b4b,#4f46e5);color:white;">
-    <div class="container">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-2">
-                <li class="breadcrumb-item"><a href="{{ path('home') }}" class="text-light opacity-75">Accueil</a></li>
-                <li class="breadcrumb-item"><a href="{{ path('filieres') }}" class="text-light opacity-75">Filières</a></li>
-                <li class="breadcrumb-item active text-white">{{ filiere.nom }}</li>
-            </ol>
-        </nav>
-        <h1 class="fw-bold mb-1"><i class="bi bi-book-fill me-2"></i>{{ filiere.nom }}</h1>
-        <span class="badge bg-white text-primary fw-semibold">{{ filiere.niveau }}</span>
+<section class="hero-section py-5">
+    <div class="container text-white">
+        <a href="{{ path('filieres') }}" class="btn btn-outline-light btn-sm mb-3">
+            <i class="bi bi-arrow-left me-1"></i>Toutes les filières
+        </a>
+        <h1 class="fw-bold">{{ filiere.nom }}</h1>
+        <span class="badge bg-white text-primary fs-6">{{ filiere.niveau }}</span>
+        {% if filiere.duree %}
+            <span class="badge bg-white text-secondary fs-6 ms-2"><i class="bi bi-clock me-1"></i>{{ filiere.duree }}</span>
+        {% endif %}
     </div>
 </section>
 
 <section class="py-5">
     <div class="container">
         <div class="row g-4">
-
-            {# Carte description #}
             <div class="col-lg-8">
-                <div class="card p-4 mb-4">
-                    <h4 class="fw-bold mb-3"><i class="bi bi-info-circle text-primary me-2"></i>À propos de cette filière</h4>
-                    <p class="text-muted">{{ filiere.description }}</p>
-
-                    {% if filiere.duree is defined %}
-                    <hr>
-                    <div class="row g-3 mt-1">
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-clock fs-4 text-primary me-3"></i>
-                                <div>
-                                    <small class="text-muted d-block">Durée</small>
-                                    <strong>{{ filiere.duree }}</strong>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-bar-chart fs-4 text-success me-3"></i>
-                                <div>
-                                    <small class="text-muted d-block">Niveau</small>
-                                    <strong>{{ filiere.niveau }}</strong>
-                                </div>
-                            </div>
-                        </div>
+                <div class="card mb-4">
+                    <div class="card-body p-4">
+                        <h4 class="fw-bold mb-3"><i class="bi bi-info-circle text-primary me-2"></i>Description</h4>
+                        <p class="text-muted">{{ filiere.description|default('Aucune description disponible.') }}</p>
                     </div>
-                    {% endif %}
                 </div>
-
-                {% if filiere.debouches is defined %}
-                <div class="card p-4">
-                    <h4 class="fw-bold mb-3"><i class="bi bi-briefcase text-success me-2"></i>Débouchés professionnels</h4>
-                    <div class="d-flex flex-wrap gap-2">
-                        {% for debouche in filiere.debouches %}
-                        <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 fs-6">
-                            <i class="bi bi-check-circle me-1"></i>{{ debouche }}
-                        </span>
+                {% if filiere.debouches %}
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h4 class="fw-bold mb-3"><i class="bi bi-briefcase text-primary me-2"></i>Débouchés professionnels</h4>
+                        {% for debouche in filiere.debouches|split('\n') %}
+                            {% if debouche|trim %}
+                                <span class="badge me-2 mb-2 py-2 px-3" style="background:#e0e7ff;color:#4f46e5;font-size:.85rem;">
+                                    <i class="bi bi-check-circle me-1"></i>{{ debouche|trim }}
+                                </span>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>
                 {% endif %}
             </div>
-
-            {# Sidebar #}
             <div class="col-lg-4">
-                <div class="card p-4 mb-3" style="background:#f0f4ff;">
-                    <h5 class="fw-bold mb-3"><i class="bi bi-building text-primary me-2"></i>Établissements</h5>
-                    <p class="text-muted small">Trouvez les établissements qui proposent cette filière.</p>
-                    <a href="{{ path('etablissements') }}" class="btn btn-primary btn-sm w-100">
-                        <i class="bi bi-search me-1"></i>Voir les établissements
-                    </a>
-                </div>
-                <div class="card p-4">
-                    <h5 class="fw-bold mb-3"><i class="bi bi-grid text-primary me-2"></i>Autres filières</h5>
-                    <a href="{{ path('filieres') }}" class="btn btn-outline-primary btn-sm w-100">
-                        <i class="bi bi-arrow-left me-1"></i>Retour aux filières
-                    </a>
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-3"><i class="bi bi-building text-primary me-2"></i>Établissements</h5>
+                        {% for etab in filiere.etablissements %}
+                            <div class="d-flex align-items-center mb-2 p-2 rounded" style="background:#f8f9fa;">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center me-3"
+                                     style="width:36px;height:36px;background:#4f46e5;color:white;font-size:.75rem;font-weight:700;flex-shrink:0;">
+                                    {{ etab.sigle ? etab.sigle|slice(0,3) : etab.nom|slice(0,3) }}
+                                </div>
+                                <div>
+                                    <div class="fw-semibold small">{{ etab.nom }}</div>
+                                    <div class="text-muted" style="font-size:.78rem;"><i class="bi bi-geo-alt me-1"></i>{{ etab.ville }}</div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <p class="text-muted small">Aucun établissement associé.</p>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-
         </div>
     </div>
 </section>
-
 {% endblock %}

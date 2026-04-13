@@ -1,0 +1,85 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}{{ page_title }}{% endblock %}
+{% block body %}
+
+<div class="d-flex align-items-center gap-3 mb-4">
+    <a href="{{ path('admin_users_index') }}" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-left me-1"></i>Retour à la liste
+    </a>
+    <h4 class="fw-bold mb-0">{{ page_title }}</h4>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-5">
+        <div class="card text-center">
+            <div class="card-body p-5">
+                <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle"
+                     style="width:80px;height:80px;background:linear-gradient(135deg,#4f46e5,#7c3aed);font-size:2rem;color:white;font-weight:700;">
+                    {{ user.prenom|slice(0,1) }}{{ user.nom|slice(0,1) }}
+                </div>
+                <h4 class="fw-bold mb-1">{{ user.nomComplet }}</h4>
+                <div class="mb-3">
+                    {% if user.role == 'ROLE_ADMIN' %}
+                        <span class="badge bg-danger">Administrateur</span>
+                    {% elseif user.role == 'ROLE_ETABLISSEMENT' %}
+                        <span class="badge bg-warning text-dark">Établissement</span>
+                    {% else %}
+                        <span class="badge bg-primary">Étudiant</span>
+                    {% endif %}
+                    {% if user.actif %}
+                        <span class="badge bg-success ms-1">Actif</span>
+                    {% else %}
+                        <span class="badge bg-secondary ms-1">Inactif</span>
+                    {% endif %}
+                </div>
+                <p class="text-muted mb-0" style="font-size:.85rem;">
+                    Membre depuis le {{ user.createdAt|date('d/m/Y') }}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-7">
+        <div class="card h-100">
+            <div class="card-body p-4">
+                <h6 class="fw-bold text-muted text-uppercase mb-3" style="font-size:.75rem;letter-spacing:1px;">Informations</h6>
+                <table class="table table-borderless mb-0">
+                    <tr>
+                        <td class="text-muted fw-semibold" style="width:140px;">Nom</td>
+                        <td>{{ user.nom }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted fw-semibold">Prénom</td>
+                        <td>{{ user.prenom }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted fw-semibold">E-mail</td>
+                        <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted fw-semibold">Téléphone</td>
+                        <td>{{ user.telephone ?? '—' }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted fw-semibold">Rôle</td>
+                        <td>{{ user.role }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted fw-semibold">Statut</td>
+                        <td>{{ user.actif ? 'Actif' : 'Inactif' }}</td>
+                    </tr>
+                </table>
+                <div class="mt-4 d-flex gap-2">
+                    <a href="{{ path('admin_users_edit', {id: user.id}) }}" class="btn btn-primary">
+                        <i class="bi bi-pencil me-1"></i>Modifier
+                    </a>
+                    <form method="post" action="{{ path('admin_users_delete', {id: user.id}) }}"
+                          onsubmit="return confirm('Supprimer cet utilisateur ?')">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                        <button class="btn btn-outline-danger"><i class="bi bi-trash me-1"></i>Supprimer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
