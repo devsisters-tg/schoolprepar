@@ -3,6 +3,7 @@
 ## Développement Web II (IT 232) — Symfony 5.4
 
 ### 🎯 Objectif du TP3
+
 Implémentation de la base de données avec Doctrine ORM, migrations, CRUD complets et données de test.
 
 ---
@@ -38,13 +39,14 @@ php -S localhost:8000 -t public/
 
 ## 🗂️ Entités Doctrine (TP3)
 
-| Entité | Table | Description |
-|--------|-------|-------------|
-| `Filiere` | `filiere` | Filière d'études (GL, WIM, RT…) |
-| `Etablissement` | `etablissement` | École, université, institut |
-| `Evenement` | `evenement` | Conférence, webinaire, JPO, salon |
+| Entité          | Table           | Description                       |
+| --------------- | --------------- | --------------------------------- |
+| `Filiere`       | `filiere`       | Filière d'études (GL, WIM, RT…)   |
+| `Etablissement` | `etablissement` | École, université, institut       |
+| `Evenement`     | `evenement`     | Conférence, webinaire, JPO, salon |
 
 ### Relations
+
 - **Filiere ↔ Etablissement** : ManyToMany (N:N) → table pivot `filiere_etablissement`
 - **Filiere → Evenement** : OneToMany (1:N) → `filiere_id` dans `evenement`
 - **Etablissement → Evenement** : OneToMany (1:N) → `etablissement_id` dans `evenement`
@@ -54,20 +56,22 @@ php -S localhost:8000 -t public/
 ## 🌐 Routes principales
 
 ### Front-office
-| Route | URL | Controller |
-|-------|-----|-----------|
-| Accueil | `/` | HomeController |
-| Filières | `/filieres` | FiliereController |
-| Détail filière | `/filieres/{id}` | FiliereController |
+
+| Route          | URL               | Controller              |
+| -------------- | ----------------- | ----------------------- |
+| Accueil        | `/`               | HomeController          |
+| Filières       | `/filieres`       | FiliereController       |
+| Détail filière | `/filieres/{id}`  | FiliereController       |
 | Établissements | `/etablissements` | EtablissementController |
 
 ### Back-office (Admin)
-| Route | URL | Controller |
-|-------|-----|-----------|
-| Dashboard | `/admin` | AdminDashboardController |
-| Filières CRUD | `/admin/filieres/*` | AdminFiliereController |
+
+| Route               | URL                       | Controller                   |
+| ------------------- | ------------------------- | ---------------------------- |
+| Dashboard           | `/admin`                  | AdminDashboardController     |
+| Filières CRUD       | `/admin/filieres/*`       | AdminFiliereController       |
 | Établissements CRUD | `/admin/etablissements/*` | AdminEtablissementController |
-| Événements CRUD | `/admin/evenements/*` | AdminEvenementController |
+| Événements CRUD     | `/admin/evenements/*`     | AdminEvenementController     |
 
 ---
 
@@ -100,7 +104,9 @@ src/
 
 ---
 
-## 📄 Livrables TP3
+---
+
+### 📄 Livrables TP3
 
 - [x] Entités Doctrine (`src/Entity/`)
 - [x] Relations 1:N et N:N implémentées
@@ -113,4 +119,111 @@ src/
 
 ---
 
-*IT 232 — Développement Web II — Année Académique 2025-2026*
+---
+
+## TP4 — Formulaires, Validation & Sécurité
+
+### 🎯 Objectif du TP4
+
+Sécuriser l'application avec un système d'authentification complet,
+la gestion des rôles, la validation des données et la protection des routes.
+
+---
+
+### 🔐 Système d'authentification
+
+| Route       | Description                         |
+| ----------- | ----------------------------------- |
+| `/register` | Inscription d'un nouvel utilisateur |
+| `/login`    | Connexion                           |
+| `/logout`   | Déconnexion                         |
+| `/profile`  | Profil de l'utilisateur connecté    |
+
+---
+
+### 👥 Gestion des rôles
+
+| Rôle         | Accès                       |
+| ------------ | --------------------------- |
+| `ROLE_USER`  | Site public + page profil   |
+| `ROLE_ADMIN` | Tout + back-office `/admin` |
+
+---
+
+### ✅ Validation des données
+
+Contraintes appliquées sur toutes les entités :
+
+- `@Assert\NotBlank` — champs obligatoires
+- `@Assert\Length` — longueur min/max avec messages personnalisés
+- `@Assert\Email` — format email valide
+- `@Assert\NotNull` — valeur non nulle (dates)
+- `@UniqueEntity` — email unique en base de données
+
+Les erreurs s'affichent directement sous chaque champ dans les formulaires Twig.
+
+---
+
+### 📝 Formulaires personnalisés
+
+Pour chaque entité, les FormType ont été enrichis avec :
+
+- Labels en français explicites
+- Types adaptés (`ChoiceType`, `EmailType`, `TelType`, `DateTimeType`, `RepeatedType`)
+- Placeholders sur chaque champ
+- Organisation logique des champs
+
+---
+
+### 🛡️ Sécurisation des routes
+
+```yaml
+# security.yaml
+access_control:
+  - { path: ^/admin, roles: ROLE_ADMIN }
+  - { path: ^/profile, roles: ROLE_USER }
+```
+
+- `@IsGranted("ROLE_ADMIN")` sur tous les contrôleurs admin
+- Protection CSRF automatique sur tous les formulaires
+- Mots de passe hachés avec `UserPasswordEncoderInterface`
+- Pages d'erreur 403 et 404 personnalisées
+
+src/
+├── Controller/
+│ ├── SecurityController.php ← login, logout, register
+│ ├── ProfileController.php ← page profil
+│ └── AdminUserController.php ← CRUD utilisateurs
+├── Entity/
+│ └── User.php ← implémente UserInterface
+├── Form/
+│ └── RegistrationFormType.php ← formulaire d'inscription
+templates/
+├── security/
+│ ├── login.html.twig
+│ └── register.html.twig
+└── profile/
+└── index.html.twig
+config/packages/
+└── security.yaml ← firewall, rôles, access_control
+
+---
+
+### 📄 Livrables TP4
+
+- [x] Système d'authentification fonctionnel (inscription, connexion, déconnexion)
+- [x] Gestion des rôles `ROLE_USER` / `ROLE_ADMIN`
+- [x] Formulaires personnalisés avec labels, types et placeholders
+- [x] Validation côté serveur avec affichage des erreurs
+- [x] Routes sécurisées (`security.yaml` + `@IsGranted`)
+- [x] Protection CSRF active
+- [x] Pages 403 et 404 personnalisées
+- [x] Dépôt Git à jour
+
+---
+
+## _IT 232 — Développement Web II — Année Académique 2025-2026_
+
+### 📁 Fichiers ajoutés (TP4)
+
+_IT 232 — Développement Web II — Année Académique 2025-2026_
