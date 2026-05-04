@@ -1,0 +1,94 @@
+{% extends 'front/base.html.twig' %}
+
+{% block title %}Connexion — SchoolPrepar{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">
+                    <i class="bi bi-shield-lock me-2 text-primary"></i>Connexion
+                </h2>
+                <p class="text-muted">Accédez à votre espace SchoolPrepar</p>
+            </div>
+
+            {% if error %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endif %}
+
+            {% for type, messages in app.flashes %}
+                {% for msg in messages %}
+                    <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show">
+                        {{ msg }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <form method="post" action="{{ path('app_login') }}" novalidate>
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                        <div class="mb-3">
+                            <label for="inputEmail" class="form-label fw-semibold">
+                                <i class="bi bi-envelope me-1"></i>Adresse e-mail
+                            </label>
+                            <input type="email"
+                                   id="inputEmail"
+                                   name="_username"
+                                   class="form-control form-control-lg"
+                                   value="{{ last_username }}"
+                                   placeholder="votre@email.com"
+                                   required
+                                   autofocus>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="inputPassword" class="form-label fw-semibold">
+                                <i class="bi bi-lock me-1"></i>Mot de passe
+                            </label>
+                            <input type="password"
+                                   id="inputPassword"
+                                   name="_password"
+                                   class="form-control form-control-lg"
+                                   placeholder="••••••••"
+                                   required>
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="remember_me" name="_remember_me">
+                            <label class="form-check-label" for="remember_me">Se souvenir de moi</label>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Se connecter
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="text-center mt-3">
+                <p class="text-muted mb-0">
+                    Pas encore de compte ?
+                    <a href="{{ path('app_register') }}" class="text-primary fw-semibold">S'inscrire</a>
+                </p>
+                <p class="mt-2">
+                    <a href="{{ path('home') }}" class="text-muted">
+                        <i class="bi bi-arrow-left me-1"></i>Retour au site
+                    </a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

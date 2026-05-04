@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\EvenementRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=EvenementRepository::class)
@@ -18,13 +19,22 @@ class Evenement
      */
     private ?int $id = null;
 
-    /** @ORM\Column(type="string", length=200) */
+    /**
+     * @ORM\Column(type="string", length=200)
+     * @Assert\NotBlank(message="Le titre de l'événement est obligatoire.")
+     * @Assert\Length(min=5, max=200,
+     *     minMessage="Le titre doit contenir au moins {{ limit }} caractères.",
+     *     maxMessage="Le titre ne peut pas dépasser {{ limit }} caractères.")
+     */
     private string $titre = '';
 
     /** @ORM\Column(type="text", nullable=true) */
     private ?string $description = null;
 
-    /** @ORM\Column(type="datetime") */
+    /**
+     * @ORM\Column(type="datetime")
+     * @Assert\NotNull(message="La date de l'événement est obligatoire.")
+     */
     private \DateTimeInterface $dateEvenement;
 
     /** @ORM\Column(type="string", length=150, nullable=true) */

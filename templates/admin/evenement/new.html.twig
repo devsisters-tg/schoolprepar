@@ -4,24 +4,62 @@
 <div class="container-fluid py-4">
     <div class="d-flex align-items-center mb-4">
         <a href="{{ path('admin_evenements_index') }}" class="btn btn-outline-secondary me-3"><i class="bi bi-arrow-left"></i></a>
-        <h4 class="mb-0 fw-bold"><i class="bi bi-plus-circle text-primary me-2"></i>{{ page_title }}</h4>
+        <h4 class="mb-0 fw-bold">
+            <i class="bi bi-{% if 'new' == 'new' %}plus-circle text-primary{% else %}pencil text-warning{% endif %} me-2"></i>
+            {{ page_title }}
+        </h4>
     </div>
-    <div class="card shadow-sm" style="max-width:700px">
+    <div class="card shadow-sm" style="max-width:750px">
         <div class="card-body p-4">
             {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
-            <div class="mb-3">{{ form_label(form.titre) }}{{ form_widget(form.titre) }}</div>
-            <div class="row">
-                <div class="col-md-6 mb-3">{{ form_label(form.type) }}{{ form_widget(form.type) }}</div>
-                <div class="col-md-6 mb-3">{{ form_label(form.lieu) }}{{ form_widget(form.lieu) }}</div>
+
+            <div class="mb-3">
+                {{ form_label(form.titre, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
+                {{ form_widget(form.titre) }}
+                {% if form_errors(form.titre) %}
+                    <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ form_errors(form.titre) }}</div>
+                {% endif %}
             </div>
-            <div class="mb-3">{{ form_label(form.dateEvenement) }}{{ form_widget(form.dateEvenement) }}</div>
-            <div class="mb-3">{{ form_label(form.description) }}{{ form_widget(form.description) }}</div>
+
             <div class="row">
-                <div class="col-md-6 mb-3">{{ form_label(form.filiere) }}{{ form_widget(form.filiere) }}</div>
-                <div class="col-md-6 mb-3">{{ form_label(form.etablissement) }}{{ form_widget(form.etablissement) }}</div>
+                <div class="col-md-6 mb-3">
+                    {{ form_label(form.type, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
+                    {{ form_widget(form.type) }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form_label(form.dateEvenement, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
+                    {{ form_widget(form.dateEvenement) }}
+                    {% if form_errors(form.dateEvenement) %}
+                        <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ form_errors(form.dateEvenement) }}</div>
+                    {% endif %}
+                </div>
             </div>
-            <div class="d-flex gap-2 mt-3">
-                <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Enregistrer</button>
+
+            <div class="mb-3">
+                {{ form_label(form.lieu, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
+                {{ form_widget(form.lieu) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.description, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
+                {{ form_widget(form.description) }}
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form_label(form.filiere, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
+                    {{ form_widget(form.filiere) }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form_label(form.etablissement, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
+                    {{ form_widget(form.etablissement) }}
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 mt-2">
+                <button type="submit" class="btn btn-{% if 'new' == 'new' %}primary{% else %}warning text-white{% endif %}">
+                    <i class="bi bi-check-lg me-1"></i>Enregistrer
+                </button>
                 <a href="{{ path('admin_evenements_index') }}" class="btn btn-outline-secondary">Annuler</a>
             </div>
             {{ form_end(form) }}

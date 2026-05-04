@@ -8,14 +8,21 @@ use App\Repository\FiliereRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
+/**
+ * @Route("/admin", name="admin_")
+ * @IsGranted("ROLE_ADMIN")
+ */
 class AdminDashboardController extends AbstractController
 {
-    #[Route('/admin', name: 'admin_dashboard')]
+    /**
+     * @Route("", name="dashboard")
+     */
     public function index(
-        FiliereRepository      $filiereRepo,
+        FiliereRepository       $filiereRepo,
         EtablissementRepository $etabRepo,
-        EvenementRepository    $evRepo
+        EvenementRepository     $evRepo
     ): Response {
         return $this->render('admin/dashboard.html.twig', [
             'page_title'        => 'Dashboard',

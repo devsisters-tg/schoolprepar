@@ -1,0 +1,91 @@
+{% extends 'front/base.html.twig' %}
+{% block title %}Mon profil — SchoolPrepar{% endblock %}
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3 border-bottom">
+                    <h4 class="mb-0 fw-bold">
+                        <i class="bi bi-person-circle me-2 text-primary"></i>Mon profil
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center gap-4 mb-4">
+                        <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center text-white fw-bold"
+                             style="width:72px;height:72px;font-size:1.8rem;">
+                            {{ user.prenom|slice(0,1)|upper }}{{ user.nom|slice(0,1)|upper }}
+                        </div>
+                        <div>
+                            <h5 class="mb-1 fw-bold">{{ user.nomComplet }}</h5>
+                            <div class="text-muted">{{ user.email }}</div>
+                            <div class="mt-2">
+                                {% for role in user.roles %}
+                                    {% if role == 'ROLE_ADMIN' %}
+                                        <span class="badge bg-warning text-dark me-1">
+                                            <i class="bi bi-shield-fill-check me-1"></i>Administrateur
+                                        </span>
+                                    {% elseif role == 'ROLE_USER' %}
+                                        <span class="badge bg-primary me-1">
+                                            <i class="bi bi-person-check me-1"></i>Utilisateur
+                                        </span>
+                                    {% elseif role != 'ROLE_USER' %}
+                                        <span class="badge bg-secondary me-1">{{ role }}</span>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <dl class="row">
+                        <dt class="col-sm-4 text-muted">Nom complet</dt>
+                        <dd class="col-sm-8 fw-semibold">{{ user.nomComplet }}</dd>
+
+                        <dt class="col-sm-4 text-muted">Adresse e-mail</dt>
+                        <dd class="col-sm-8">{{ user.email }}</dd>
+
+                        {% if user.telephone %}
+                        <dt class="col-sm-4 text-muted">Téléphone</dt>
+                        <dd class="col-sm-8">{{ user.telephone }}</dd>
+                        {% endif %}
+
+                        <dt class="col-sm-4 text-muted">Membre depuis</dt>
+                        <dd class="col-sm-8">{{ user.createdAt|date('d/m/Y') }}</dd>
+
+                        <dt class="col-sm-4 text-muted">Statut</dt>
+                        <dd class="col-sm-8">
+                            {% if user.actif %}
+                                <span class="badge bg-success">Actif</span>
+                            {% else %}
+                                <span class="badge bg-danger">Inactif</span>
+                            {% endif %}
+                        </dd>
+                    </dl>
+
+                    <hr>
+
+                    <div class="d-flex gap-2 mt-3">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('admin_dashboard') }}" class="btn btn-warning btn-sm">
+                                <i class="bi bi-shield-lock me-1"></i>Panneau Admin
+                            </a>
+                        {% endif %}
+                        <a href="{{ path('app_logout') }}" class="btn btn-outline-danger btn-sm">
+                            <i class="bi bi-box-arrow-right me-1"></i>Déconnexion
+                        </a>
+                        <a href="{{ path('home') }}" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-house me-1"></i>Accueil
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

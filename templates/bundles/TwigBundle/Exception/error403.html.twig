@@ -1,0 +1,29 @@
+{% extends 'front/base.html.twig' %}
+{% block title %}Accès refusé — SchoolPrepar{% endblock %}
+{% block body %}
+<div class="container py-5 text-center">
+    <div class="py-5">
+        <div style="font-size:5rem;">🔒</div>
+        <h1 class="display-4 fw-bold text-danger mt-3">403</h1>
+        <h2 class="h4 text-muted mb-4">Accès refusé</h2>
+        <p class="lead mb-4">
+            Vous n'avez pas les droits nécessaires pour accéder à cette page.<br>
+            Seuls les administrateurs peuvent accéder au panneau d'administration.
+        </p>
+        <div class="d-flex gap-3 justify-content-center">
+            {% if app.user %}
+                <a href="{{ path('home') }}" class="btn btn-primary btn-lg">
+                    <i class="bi bi-house me-2"></i>Retour à l'accueil
+                </a>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="btn btn-primary btn-lg">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Se connecter
+                </a>
+                <a href="{{ path('home') }}" class="btn btn-outline-secondary btn-lg">
+                    <i class="bi bi-house me-2"></i>Accueil
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

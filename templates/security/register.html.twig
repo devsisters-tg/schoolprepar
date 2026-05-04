@@ -1,0 +1,103 @@
+{% extends 'front/base.html.twig' %}
+
+{% block title %}Inscription — SchoolPrepar{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">
+                    <i class="bi bi-person-plus me-2 text-success"></i>Créer un compte
+                </h2>
+                <p class="text-muted">Rejoignez la plateforme SchoolPrepar</p>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    {{ form_start(registrationForm, {attr: {novalidate: 'novalidate'}}) }}
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(registrationForm.nom, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
+                            {{ form_widget(registrationForm.nom) }}
+                            {% if form_errors(registrationForm.nom) %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form_errors(registrationForm.nom) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(registrationForm.prenom, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
+                            {{ form_widget(registrationForm.prenom) }}
+                            {% if form_errors(registrationForm.prenom) %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form_errors(registrationForm.prenom) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(registrationForm.email, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
+                        {{ form_widget(registrationForm.email) }}
+                        {% if form_errors(registrationForm.email) %}
+                            <div class="invalid-feedback d-block">
+                                {{ form_errors(registrationForm.email) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(registrationForm.telephone, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
+                        {{ form_widget(registrationForm.telephone) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(registrationForm.plainPassword.first, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
+                        {{ form_widget(registrationForm.plainPassword.first) }}
+                        {% if form_errors(registrationForm.plainPassword.first) %}
+                            <div class="invalid-feedback d-block">
+                                {{ form_errors(registrationForm.plainPassword.first) }}
+                            </div>
+                        {% endif %}
+                        <div class="form-text">Minimum 6 caractères.</div>
+                    </div>
+
+                    <div class="mb-4">
+                        {{ form_label(registrationForm.plainPassword.second, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
+                        {{ form_widget(registrationForm.plainPassword.second) }}
+                        {% if form_errors(registrationForm.plainPassword) %}
+                            <div class="invalid-feedback d-block">
+                                {{ form_errors(registrationForm.plainPassword) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="bi bi-check-circle me-2"></i>Créer mon compte
+                        </button>
+                    </div>
+
+                    {{ form_end(registrationForm) }}
+                </div>
+            </div>
+
+            <div class="text-center mt-3">
+                <p class="text-muted mb-0">
+                    Déjà un compte ?
+                    <a href="{{ path('app_login') }}" class="text-primary fw-semibold">Se connecter</a>
+                </p>
+                <p class="mt-2">
+                    <a href="{{ path('home') }}" class="text-muted">
+                        <i class="bi bi-arrow-left me-1"></i>Retour au site
+                    </a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

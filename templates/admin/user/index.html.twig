@@ -39,12 +39,12 @@
                     <td><a href="mailto:{{ user.email }}" class="text-decoration-none">{{ user.email }}</a></td>
                     <td>{{ user.telephone ?? '—' }}</td>
                     <td>
-                        {% if user.role == 'ROLE_ADMIN' %}
+                        {% if 'ROLE_ADMIN' in user.roles %}
                             <span class="badge bg-danger">Admin</span>
-                        {% elseif user.role == 'ROLE_ETABLISSEMENT' %}
+                        {% elseif 'ROLE_ETABLISSEMENT' in user.roles %}
                             <span class="badge bg-warning text-dark">Établissement</span>
                         {% else %}
-                            <span class="badge bg-primary">Étudiant</span>
+                            <span class="badge bg-primary">Utilisateur</span>
                         {% endif %}
                     </td>
                     <td>

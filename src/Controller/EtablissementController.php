@@ -9,7 +9,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EtablissementController extends AbstractController
 {
-    #[Route('/etablissements', name: 'etablissements')]
+    /**
+    * @Route("/etablissements", name="etablissements_index")
+    */
     public function index(EtablissementRepository $repo): Response
     {
         return $this->render('front/etablissement/index.html.twig', [

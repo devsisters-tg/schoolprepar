@@ -4,41 +4,63 @@
 <div class="container-fluid py-4">
     <div class="d-flex align-items-center mb-4">
         <a href="{{ path('admin_filieres_index') }}" class="btn btn-outline-secondary me-3"><i class="bi bi-arrow-left"></i></a>
-        <h4 class="mb-0 fw-bold"><i class="bi bi-pencil me-2 text-warning"></i>{{ page_title }}</h4>
+        <h4 class="mb-0 fw-bold">
+            <i class="bi bi-{% if 'edit' == 'new' %}plus-circle text-primary{% else %}pencil text-warning{% endif %} me-2"></i>
+            {{ page_title }}
+        </h4>
     </div>
-    <div class="card shadow-sm" style="max-width:700px">
+    <div class="card shadow-sm" style="max-width:750px">
         <div class="card-body p-4">
             {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+
             <div class="mb-3">
-                {{ form_label(form.nom) }}
+                {{ form_label(form.nom, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
                 {{ form_widget(form.nom) }}
+                {% if form_errors(form.nom) %}
+                    <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ form_errors(form.nom) }}</div>
+                {% endif %}
             </div>
+
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    {{ form_label(form.niveau) }}
+                    {{ form_label(form.niveau, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
                     {{ form_widget(form.niveau) }}
+                    {% if form_errors(form.niveau) %}
+                        <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ form_errors(form.niveau) }}</div>
+                    {% endif %}
                 </div>
                 <div class="col-md-6 mb-3">
-                    {{ form_label(form.duree) }}
+                    {{ form_label(form.duree, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
                     {{ form_widget(form.duree) }}
                 </div>
             </div>
+
             <div class="mb-3">
-                {{ form_label(form.description) }}
+                {{ form_label(form.description, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
                 {{ form_widget(form.description) }}
             </div>
+
             <div class="mb-3">
-                {{ form_label(form.debouches) }}
+                {{ form_label(form.debouches, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
                 {{ form_widget(form.debouches) }}
             </div>
-            <div class="mb-3">
+
+            <div class="mb-4">
                 <label class="form-label fw-semibold">Établissements proposant cette filière</label>
-                <div class="border rounded p-3">
-                    {{ form_widget(form.etablissements) }}
+                <div class="border rounded p-3" style="max-height:200px;overflow-y:auto;background:#f8f9fa;">
+                    {% for choice in form.etablissements %}
+                        <div class="form-check mb-1">
+                            {{ form_widget(choice, {attr: {class: 'form-check-input'}}) }}
+                            {{ form_label(choice, null, {label_attr: {class: 'form-check-label'}}) }}
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
-            <div class="d-flex gap-2 mt-4">
-                <button type="submit" class="btn btn-warning text-white"><i class="bi bi-check-lg me-1"></i>Enregistrer</button>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-{% if 'edit' == 'new' %}primary{% else %}warning text-white{% endif %}">
+                    <i class="bi bi-check-lg me-1"></i>Enregistrer
+                </button>
                 <a href="{{ path('admin_filieres_index') }}" class="btn btn-outline-secondary">Annuler</a>
             </div>
             {{ form_end(form) }}

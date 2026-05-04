@@ -1,58 +1,84 @@
 {% extends 'admin/base.html.twig' %}
 {% block title %}{{ page_title }}{% endblock %}
 {% block body %}
+<div class="container-fluid py-4">
+    <div class="d-flex align-items-center mb-4">
+        <a href="{{ path('admin_users_index') }}" class="btn btn-outline-secondary me-3"><i class="bi bi-arrow-left"></i></a>
+        <h4 class="mb-0 fw-bold">
+            <i class="bi bi-{% if 'edit' == 'new' %}person-plus text-primary{% else %}person-gear text-warning{% endif %} me-2"></i>
+            {{ page_title }}
+        </h4>
+    </div>
+    <div class="card shadow-sm" style="max-width:650px">
+        <div class="card-body p-4">
+            {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
 
-<div class="d-flex align-items-center gap-3 mb-4">
-    <a href="{{ path('admin_users_index') }}" class="btn btn-outline-secondary btn-sm">
-        <i class="bi bi-arrow-left me-1"></i>Retour
-    </a>
-    <h4 class="fw-bold mb-0">{{ page_title }}</h4>
-</div>
-
-<div class="card" style="max-width:680px;">
-    <div class="card-body p-4">
-        {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
-
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label fw-semibold">{{ form_label(form.nom) }}</label>
-                {{ form_widget(form.nom) }}
-                {{ form_errors(form.nom) }}
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-semibold">{{ form_label(form.prenom) }}</label>
-                {{ form_widget(form.prenom) }}
-                {{ form_errors(form.prenom) }}
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-semibold">{{ form_label(form.email) }}</label>
-                {{ form_widget(form.email) }}
-                {{ form_errors(form.email) }}
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-semibold">{{ form_label(form.telephone) }}</label>
-                {{ form_widget(form.telephone) }}
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-semibold">{{ form_label(form.role) }}</label>
-                {{ form_widget(form.role) }}
-            </div>
-            <div class="col-md-6 d-flex align-items-end">
-                <div class="form-check">
-                    {{ form_widget(form.actif) }}
-                    <label class="form-check-label fw-semibold">Compte actif</label>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form_label(form.nom, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
+                    {{ form_widget(form.nom) }}
+                    {% if form_errors(form.nom) %}
+                        <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ form_errors(form.nom) }}</div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form_label(form.prenom, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
+                    {{ form_widget(form.prenom) }}
+                    {% if form_errors(form.prenom) %}
+                        <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ form_errors(form.prenom) }}</div>
+                    {% endif %}
                 </div>
             </div>
-        </div>
 
-        <div class="mt-4 d-flex gap-2">
-            <button type="submit" class="btn btn-primary px-4">
-                <i class="bi bi-check-lg me-1"></i>Enregistrer les modifications
-            </button>
-            <a href="{{ path('admin_users_index') }}" class="btn btn-outline-secondary">Annuler</a>
-        </div>
+            <div class="mb-3">
+                {{ form_label(form.email, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
+                {{ form_widget(form.email) }}
+                {% if form_errors(form.email) %}
+                    <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ form_errors(form.email) }}</div>
+                {% endif %}
+            </div>
 
-        {{ form_end(form) }}
+            <div class="mb-3">
+                {{ form_label(form.telephone, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
+                {{ form_widget(form.telephone) }}
+            </div>
+
+            {% if 'edit' == 'new' %}
+            <div class="mb-3">
+                {{ form_label(form.plainPassword, null, {label_attr: {class: 'form-label fw-semibold'}}) }}
+                {{ form_widget(form.plainPassword) }}
+                {% if form_errors(form.plainPassword) %}
+                    <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ form_errors(form.plainPassword) }}</div>
+                {% endif %}
+                <div class="form-text">Le mot de passe sera haché automatiquement.</div>
+            </div>
+            {% endif %}
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Rôles</label>
+                <div class="border rounded p-3" style="background:#f8f9fa;">
+                    {% for choice in form.roles %}
+                        <div class="form-check mb-1">
+                            {{ form_widget(choice, {attr: {class: 'form-check-input'}}) }}
+                            {{ form_label(choice, null, {label_attr: {class: 'form-check-label'}}) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="mb-4 form-check">
+                {{ form_widget(form.actif, {attr: {class: 'form-check-input'}}) }}
+                {{ form_label(form.actif, null, {label_attr: {class: 'form-check-label fw-semibold'}}) }}
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-{% if 'edit' == 'new' %}primary{% else %}warning text-white{% endif %}">
+                    <i class="bi bi-check-lg me-1"></i>Enregistrer
+                </button>
+                <a href="{{ path('admin_users_index') }}" class="btn btn-outline-secondary">Annuler</a>
+            </div>
+            {{ form_end(form) }}
+        </div>
     </div>
 </div>
 {% endblock %}

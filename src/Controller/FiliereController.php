@@ -9,7 +9,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class FiliereController extends AbstractController
 {
-    #[Route('/filieres', name: 'filieres')]
+    /**
+     * @Route("/filieres", name="filieres_index")
+     */
     public function index(FiliereRepository $repo): Response
     {
         return $this->render('front/filiere/index.html.twig', [
@@ -18,7 +20,9 @@ class FiliereController extends AbstractController
         ]);
     }
 
-    #[Route('/filieres/{id}', name: 'filiere_show', requirements: ['id' => '\d+'])]
+    /**
+     * @Route("/filieres/{id}", name="filiere_show", requirements={"id"="\d+"})
+     */
     public function show(int $id, FiliereRepository $repo): Response
     {
         $filiere = $repo->find($id);
